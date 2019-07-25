@@ -1,16 +1,15 @@
 import Gallery from 'react-grid-gallery';
 import Page from '../../components/page';
 import Layout from '../../components/layout';
-import AsyncData from '../../components/async-data';
+import AsyncData, { getOrigin } from '../../components/async-data';
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
 
-const getPicsumAPIUrl = (page=0, limit=100) => { return `https://picsum.photos/v2/list?page=${page}&limit=${limit}`; }
-
+const getPicsumAPIUrl = (page = 0, limit = 100) => { return `/api/photos?page=${page}&limit=${limit}`; }
 const processImages = (photos) => {
   return photos.map((photo) => {
     return {
       src: photo.download_url,
-      thumbnail: `https://picsum.photos/id/${photo.id}/367/267`,
+      thumbnail: `/api/photos/${photo.id}`,
       thumbnailWidth: 367,
       thumbnailHeight: 267,
       caption: photo.author
@@ -28,7 +27,7 @@ export default class extends Page {
   }
 
   static async getInitialProps({ req }) {
-    const data = await AsyncData.getData(getPicsumAPIUrl());
+    const data = await AsyncData.getData(getOrigin(req) + getPicsumAPIUrl());
     return {
       photos: processImages(data)
     }
@@ -36,7 +35,7 @@ export default class extends Page {
 
   async handleClick(e, index) {
     e.preventDefault();
-    const data = await AsyncData.getData(getPicsumAPIUrl(index));
+    const data = await AsyncData.getData(getOrigin() + getPicsumAPIUrl(index));
     this.setState({
       currentPage: index,
       photos: processImages(data)

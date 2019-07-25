@@ -1,10 +1,10 @@
 {
-  "name": "nextjs-starter",
+  "name": "gallery-app",
   "version": "7.0.2",
   "description": "A starter Next.js project with email and oAuth authentication",
-  "author": "Iain Collins <me@iaincollins.com>",
-  "license": "ISC",
-  "repository": "https://github.com/iaincollins/nextjs-starter.git",
+  "author": "Simone Boscolo Berto <simone.bb2003@gmail.com>",
+  "license": "MIT",
+  "repository": "https://github.com/siboscol/gallery-app.git",
   "main": "index.js",
   "dependencies": {
     "babel-core": "^6.26.3",
@@ -20,6 +20,7 @@
     "nedb": "^1.8.0",
     "next": "^7.0.2",
     "next-auth": "^1.12.1",
+    "node-fetch": "^2.6.0",
     "node-sass": "^4.11.0",
     "nodemailer": "^4.7.0",
     "nodemailer-direct-transport": "^3.3.2",

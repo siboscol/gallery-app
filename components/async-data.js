@@ -18,3 +18,14 @@ export default class {
     return data
   }
 }
+
+// This function returns base url and runs on both server and in the browser
+export const getOrigin = (req) => {
+  if (req) {
+    const protocol = req.protocol + ':'
+    const host = req.hostname
+    const port = req.connection.localPort
+    return protocol + '//' + host + ':' + port
+  }
+  return window.location.origin
+}
