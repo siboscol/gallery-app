@@ -2,6 +2,9 @@ import Gallery from 'react-grid-gallery';
 import Page from '../../components/page';
 import Layout from '../../components/layout';
 import AsyncData from '../../components/async-data';
+import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
+
+const getPicsumAPIUrl = (page=0, limit=100) => { return `https://picsum.photos/v2/list?page=${page}&limit=${limit}`; }
 
 const processImages = (photos) => {
   return photos.map((photo) => {
@@ -16,15 +19,32 @@ const processImages = (photos) => {
 }
 
 export default class extends Page {
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentPage: 1,
+      photos: this.props.photos
+    };
+  }
 
   static async getInitialProps({ req }) {
-    const data = await AsyncData.getData('https://picsum.photos/v2/list?limit=100');
-    console.log('data length', data.length);
+    const data = await AsyncData.getData(getPicsumAPIUrl());
     return {
       photos: processImages(data)
     }
   }
+
+  async handleClick(e, index) {
+    e.preventDefault();
+    const data = await AsyncData.getData(getPicsumAPIUrl(index));
+    this.setState({
+      currentPage: index,
+      photos: processImages(data)
+    });
+  }
+
   render() {
+    const { currentPage } = this.state;
     return (
       <Layout {...this.props} title="Gallery">
         <h1 className="display-2">Gallery</h1>
@@ -38,7 +58,25 @@ export default class extends Page {
           border: "1px solid #fff",
           overflow: "auto"
         }}>
-          <Gallery images={this.props.photos} enableImageSelection={false}/>
+          <Gallery images={this.state.photos} enableImageSelection={false} />
+        </div>
+        <div className="pagination-wrapper">
+          <Pagination aria-label="Page navigation example">
+            <PaginationItem disabled={currentPage <= 0}>
+              <PaginationLink
+                onClick={e => this.handleClick(e, currentPage - 1)}
+                previous
+                href="#"
+              />
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationLink
+                onClick={e => this.handleClick(e, currentPage + 1)}
+                next
+                href="#"
+              />
+            </PaginationItem>
+          </Pagination>
         </div>
       </Layout>
     )

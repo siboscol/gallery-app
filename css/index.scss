@@ -56,7 +56,7 @@ pre {
 }
 
 /**
- * This is a fix for Reactstrap 5.0.0-alpha.4 not displaying menus in the 
+ * This is a fix for Reactstrap 5.0.0-alpha.4 not displaying menus in the
  * navbar correcrtly on mobile devices.
  **/
 .navbar .dropdown {
@@ -87,3 +87,11 @@ pre {
   color: #000;
 }
 
+.pagination-wrapper {
+  overflow-x:auto;
+}
+
+.pagination {
+  justify-content: center;
+  margin:30px;
+}
