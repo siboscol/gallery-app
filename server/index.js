@@ -4,6 +4,7 @@ const express = require('express');
 const path = require('path');
 const next = require('next');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const jwt = require('./routes/users/_helpers/jwt');
 const errorHandler = require('./routes/users/_helpers/error-handler');
@@ -34,6 +35,9 @@ nextApp.prepare().then(() => {
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(bodyParser.json());
     app.use(cors());
+
+    // To parse cookie on request
+    app.use(cookieParser());
 
     // use JWT auth to secure the api
     // app.use(jwt());

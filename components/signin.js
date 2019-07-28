@@ -1,102 +1,214 @@
 import React from 'react'
 import Router from 'next/router'
-import { Row, Col, Form, Input, Label, Button } from 'reactstrap'
+import { Row, Col, Form, Input, Label, Button, FormGroup, FormFeedback } from 'reactstrap'
 import Cookies from 'universal-cookie'
-// import { NextAuth } from 'next-auth/client'
+import fetch from 'isomorphic-fetch'
 
 export default class extends React.Component {
 
   constructor(props) {
     super(props)
     this.state = {
-      email: '',
-      session: this.props.session,
-      providers: this.props.providers,
-      submitting: false
+      username: '',
+      password: '',
+      submitting: false,
+      error: false
     }
     this.handleSubmit = this.handleSubmit.bind(this)
-    this.handleEmailChange = this.handleEmailChange.bind(this)
+    this.handleUsernameChange = this.handleUsernameChange.bind(this)
+    this.handlePasswordChange = this.handlePasswordChange.bind(this)
 
   }
 
-  handleEmailChange(event) {
+  handleUsernameChange(event) {
     this.setState({
-      email: event.target.value.trim()
+      username: event.target.value.trim()
     })
   }
 
-  handleSubmit(event) {
+  handlePasswordChange(event) {
+    this.setState({
+      password: event.target.value
+    })
+  }
+
+  async handleSubmit(event) {
     event.preventDefault()
 
-    if (!this.state.email) return
+    if (!this.state.username && !this.state.password) return
 
     this.setState({
       submitting: true
     })
 
-    // Save current URL so user is redirected back here after signing in
-    const cookies = new Cookies()
-    cookies.set('redirect_url', window.location.pathname, { path: '/' })
+    console.log('credentials', this.state)
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: this.state.username, password: this.state.password })
+    };
+    const res = await fetch('/users/authenticate', requestOptions)
+    if (res.ok) {
+      const data = await res.json()
+      console.log('Authenticate response', data)
 
-    // NextAuth.signin(this.state.email)
-    .then(() => {
-      Router.push(`/auth/check-email?email=${this.state.email}`)
-    })
-    .catch(err => {
-      Router.push(`/auth/error?action=signin&type=email&email=${this.state.email}`)
-    })
-  }
+      const cookies = new Cookies()
+      cookies.set('token', data.token)
 
-  render() {
-    if (this.props.session.user) {
-      return(<div/>)
+      Router.push('/examples/gallery')
     } else {
-      return (
-        <React.Fragment>
-          <p className="text-center" style={{marginTop: 10, marginBottom: 30}}>{`If you don't have an account, one will be created when you sign in.`}</p>
-          <Row>
-            <Col xs={12} md={6}>
-              <SignInButtons providers={this.props.providers}/>
-            </Col>
-            <Col xs={12} md={6}>
-              <Form id="signin" method="post" action="/auth/email/signin" onSubmit={this.handleSubmit}>
-                <Input name="_csrf" type="hidden" value={this.state.session.csrfToken}/>
-                <p>
-                  <Label htmlFor="email">Email address</Label><br/>
-                  <Input name="email" disabled={this.state.submitting} type="text" placeholder="j.smith@example.com" id="email" className="form-control" value={this.state.email} onChange={this.handleEmailChange}/>
-                </p>
-                <p className="text-right">
-                  <Button id="submitButton" disabled={this.state.submitting} outline color="dark" type="submit">
-                    {this.state.submitting === true && <span className="icon icon-spin ion-md-refresh mr-2"/>}
-                    Sign in with email
-                  </Button>
-                </p>
-              </Form>
-            </Col>
-          </Row>
-        </React.Fragment>
-      )
+      // Error while logging in
+      this.setState({
+        error: true,
+        submitting: false
+      })
     }
   }
-}
 
-export class SignInButtons extends React.Component {
   render() {
     return (
       <React.Fragment>
-        {
-          Object.keys(this.props.providers).map((provider, i) => {
-            if (!this.props.providers[provider].signin) return null
-
-            return (
-              <p key={i}>
-                <a className="btn btn-block btn-outline-secondary" href={this.props.providers[provider].signin}>
-                  Sign in with {provider}
-                </a>
+        <Row>
+          <Col xs={12} md={6}>
+            <SignUp />
+          </Col>
+          <Col xs={12} md={6}>
+            <p className="font-weight-bold">Have an account?</p>
+            <Form id="signin" method="post" onSubmit={this.handleSubmit}>
+                <Label htmlFor="username">Username</Label><br />
+                <Input invalid={this.state.error} name="username" style={{ marginBottom: 5 }} disabled={this.state.submitting} type="text" id="username" className="form-control" value={this.state.username} onChange={this.handleUsernameChange} />
+                <FormGroup>
+                  <Label htmlFor="password">Password</Label><br />
+                  <Input invalid={this.state.error} name="password" disabled={this.state.submitting} type="password" id="password" className="form-control" value={this.state.password} onChange={this.handlePasswordChange} />
+                  <FormFeedback>Username or password is incorrect</FormFeedback>
+                </FormGroup>
+              <p/>
+              <p className="text-right">
+                <Button id="submitButton" disabled={this.state.submitting} outline color="dark" type="submit">
+                  {this.state.submitting === true && <span className="icon icon-spin ion-md-refresh mr-2" />}
+                  Log in
+                  </Button>
               </p>
-              )
-          })
-        }
+            </Form>
+          </Col>
+        </Row>
+      </React.Fragment>
+    )
+  }
+}
+
+export class SignUp extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      signUpsubmitting: false,
+      error: false,
+      firstname: '',
+      lastname: '',
+      username: '',
+      password: ''
+    }
+    this.handleSignUpSubmit = this.handleSignUpSubmit.bind(this)
+    this.handleFirstnameChange = this.handleFirstnameChange.bind(this)
+    this.handleLastnameChange = this.handleLastnameChange.bind(this)
+    this.handleUsernameChange = this.handleUsernameChange.bind(this)
+    this.handlePasswordChange = this.handlePasswordChange.bind(this)
+  }
+
+  handleFirstnameChange(event) {
+    this.setState({
+      firstname: event.target.value.trim()
+    })
+  }
+
+  handleLastnameChange(event) {
+    this.setState({
+      lastname: event.target.value.trim()
+    })
+  }
+
+  handleUsernameChange(event) {
+    this.setState({
+      username: event.target.value.trim()
+    })
+  }
+
+  handlePasswordChange(event) {
+    this.setState({
+      password: event.target.value
+    })
+  }
+
+  async handleSignUpSubmit(event) {
+    event.preventDefault()
+
+    if (!this.state.username && !this.state.password) return
+
+    this.setState({
+      signUpsubmitting: true
+    })
+
+    console.log('Registration form', this.state)
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        firstName: this.state.firstname,
+        lastName: this.state.lastname,
+        username: this.state.username,
+        password: this.state.password
+      })
+    };
+    const res = await fetch('/users/register', requestOptions)
+    if (res.ok) {
+      // If registration went well, I authenticate the user and move to gallery
+      const authOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: this.state.username, password: this.state.password })
+      };
+      const res = await fetch('/users/authenticate', authOptions)
+      const data = await res.json()
+      console.log('Authenticate response sign up', data)
+      const cookies = new Cookies()
+      cookies.set('token', data.token);
+
+      Router.push('/examples/gallery')
+    } else {
+      // Error while signing up
+      this.setState({
+        error: true
+      })
+    }
+
+  }
+  render() {
+    return (
+      <React.Fragment>
+        <p className="font-weight-bold">Don't have an account?</p>
+        <Form id="signup" method="post" action="/users/register" onSubmit={this.handleSignUpSubmit}>
+          <FormGroup>
+            <Label htmlFor="firstName">First name</Label><br />
+            <Input name="firstName" style={{ marginBottom: 5 }} type="text" id="firstName" disabled={this.state.signUpsubmitting} className="form-control" value={this.state.firstname} onChange={this.handleFirstnameChange} />
+
+            <Label htmlFor="lastName">Last Name</Label><br />
+            <Input name="lastName" style={{ marginBottom: 5 }} type="text" id="lastName" disabled={this.state.signUpsubmitting} className="form-control" value={this.state.lastname} onChange={this.handleLastnameChange} />
+
+            <Label htmlFor="signUpUsername">Username</Label><br />
+            <Input invalid={this.state.error} name="username" style={{ marginBottom: 5 }} type="text" id="signUpUsername" disabled={this.state.signUpsubmitting} className="form-control" value={this.state.username} onChange={this.handleUsernameChange} />
+            <FormFeedback>Oh noes! that username is already taken</FormFeedback>
+            <p>
+              <Label htmlFor="signUpPassword">Password</Label><br />
+              <Input name="password" type="password" id="signUpPassword" disabled={this.state.signUpsubmitting} className="form-control" value={this.state.password} onChange={this.handlePasswordChange} />
+            </p>
+            <p className="text-right">
+              <Button id="signUpsubmitButton" disabled={this.props.signUpsubmitting} outline color="dark" type="submit">
+                {this.props.signUpsubmitting === true && <span className="icon icon-spin ion-md-refresh mr-2" />}
+                Sign up
+            </Button>
+            </p>
+          </FormGroup>
+        </Form>
       </React.Fragment>
     )
   }
