@@ -54,6 +54,7 @@ export default class extends React.Component {
 
       const cookies = new Cookies()
       cookies.set('token', data.token)
+      cookies.set('user', data.username)
 
       Router.push('/examples/gallery')
     } else {
@@ -171,7 +172,8 @@ export class SignUp extends React.Component {
       const data = await res.json()
       console.log('Authenticate response sign up', data)
       const cookies = new Cookies()
-      cookies.set('token', data.token);
+      cookies.set('token', data.token)
+      cookies.set('user', data.username)
 
       Router.push('/examples/gallery')
     } else {

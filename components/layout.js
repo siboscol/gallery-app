@@ -8,7 +8,6 @@ import {
   ModalFooter, ListGroup, ListGroupItem
 } from 'reactstrap'
 import Signin from './signin'
-// import { NextAuth } from 'next-auth/client'
 import Cookies from 'universal-cookie'
 import Package from '../package'
 import Styles from '../css/index.scss'
@@ -18,7 +17,6 @@ export default class extends React.Component {
   static propTypes() {
     return {
       session: React.PropTypes.object.isRequired,
-      providers: React.PropTypes.object.isRequired,
       children: React.PropTypes.object.isRequired,
       fluid: React.PropTypes.boolean,
       navmenu: React.PropTypes.boolean,
@@ -31,25 +29,13 @@ export default class extends React.Component {
     this.state = {
       navOpen: false,
       modal: false,
-      providers: null
     }
     this.toggleModal = this.toggleModal.bind(this)
   }
 
   async toggleModal(e) {
     if (e) e.preventDefault()
-    console.log('pippo')
 
-    // Save current URL so user is redirected back here after signing in
-    // if (this.state.modal !== true) {
-    //   const cookies = new Cookies()
-    //   cookies.set('redirect_url', window.location.pathname, { path: '/' })
-    // }
-
-    // this.setState({
-    //   providers: this.state.providers || await NextAuth.providers(),
-    //   modal: !this.state.modal
-    // })
     this.setState({
       modal: !this.state.modal
     })
@@ -99,7 +85,7 @@ export default class extends React.Component {
             <span className="ml-2">&copy; {new Date().getYear() + 1900}.</span>
           </p>
         </Container>
-        <SigninModal modal={this.state.modal} toggleModal={this.toggleModal} session={this.props.session} providers={this.state.providers} />
+        <SigninModal modal={this.state.modal} toggleModal={this.toggleModal} session={this.props.session} />
       </React.Fragment>
     )
   }
@@ -149,12 +135,10 @@ export class UserMenu extends React.Component {
 
   async handleSignoutSubmit(event) {
     event.preventDefault()
-
-    // Save current URL so user is redirected back here after signing out
-    //  const cookies = new Cookies()
-    //  cookies.set('redirect_url', window.location.pathname, { path: '/' })
-
-    //  await NextAuth.signout()
+    // Remove all cookies in order to sign out the user
+    const cookies = new Cookies()
+    cookies.remove('token')
+    cookies.remove('user')
     Router.push('/')
   }
 
@@ -172,17 +156,12 @@ export class UserMenu extends React.Component {
               </span>
               <span className="dropdown-toggle nav-link d-block d-md-none">
                 <span className="icon ion-md-contact mr-2"></span>
-                {session.user.name || session.user.email}
+                {session.user}
               </span>
             </div>
             <div className="dropdown-menu">
-              <Link prefetch href="/account">
-                <a href="/account" className="dropdown-item"><span className="icon ion-md-person mr-1"></span> Your Account</a>
-              </Link>
-              <div className="dropdown-divider d-none d-md-block" />
               <div className="dropdown-item p-0">
-                <Form id="signout" method="post" action="/auth/signout" onSubmit={this.handleSignoutSubmit}>
-                  <input name="_csrf" type="hidden" value={this.props.session.csrfToken} />
+                <Form id="signout" method="post"onSubmit={this.handleSignoutSubmit}>
                   <Button type="submit" block className="pl-4 rounded-0 text-left dropdown-item"><span className="icon ion-md-log-out mr-1"></span> Sign out</Button>
                 </Form>
               </div>
@@ -198,12 +177,6 @@ export class UserMenu extends React.Component {
       return (
         <Nav className="ml-auto" navbar>
           <NavItem>
-            {/**
-              * @TODO Add support for passing current URL path as redirect URL
-              * so that users without JavaScript are also redirected to the page
-              * they were on before they signed in.
-              **/}
-            {/* <a href="/auth?redirect=/" className="btn btn-outline-primary" onClick={this.props.toggleModal}><span className="icon ion-md-log-in mr-1"></span> Sign up / Sign in</a>             */}
             <a href="#" className="btn btn-outline-primary" onClick={this.props.toggleModal}><span className="icon ion-md-log-in mr-1"></span> Sign up / Log in</a>
           </NavItem>
         </Nav>
@@ -214,13 +187,11 @@ export class UserMenu extends React.Component {
 
 export class SigninModal extends React.Component {
   render() {
-    // if (this.props.providers === null) return null
-
     return (
       <Modal isOpen={this.props.modal} toggle={this.props.toggleModal} style={{ maxWidth: 700 }}>
         <ModalHeader>Sign up / Log in</ModalHeader>
         <ModalBody style={{ padding: '1em 2em' }}>
-          <Signin session={this.props.session} providers={this.props.providers} />
+          <Signin />
         </ModalBody>
       </Modal>
     )

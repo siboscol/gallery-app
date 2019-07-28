@@ -30,10 +30,11 @@ export default class extends Page {
   static async getInitialProps(ctx) {
     // Validate JWT before rendering page
     // If the JWT is invalid it must redirect back to the main page.
-    await handleAuthSSR(ctx);
+    const username = await handleAuthSSR(ctx);
     const data = await AsyncData.getData(getOrigin(ctx.req) + getPicsumAPIUrl());
     return {
-      photos: processImages(data)
+      photos: processImages(data),
+      session: {user: username},
     }
   }
 
