@@ -5,17 +5,20 @@ import { getOrigin } from './async-data';
 
 export const handleAuthSSR = async (ctx) => {
     let token = null;
+    let user = null;
 
     // if request exists we are on the server side
     if (ctx.req) {
         // Getting token from request cookies
         token = ctx.req.cookies.token;
+        user = ctx.req.cookies.user;
     }
     else {
         // Request not present, we are on client side
         // Getting token from cookies
         const cookies = new Cookies();
-        token = cookies.get('token')
+        token = cookies.get('token');
+        user = cookies.get('user');
     }
 
     // Validating token by pinging the server
@@ -26,6 +29,7 @@ export const handleAuthSSR = async (ctx) => {
                 throw new Error('Network response was not ok.');
             }
             console.log('Valid Token.')
+            return user;
         } else {
             throw new Error('Missing token');
         }
