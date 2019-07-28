@@ -20,7 +20,6 @@ export default class extends Page {
                 <br className="v-block d-sm-none"/>
                 Gallery App Project
               </span>
-              {/* <br className="v-block d-lg-none"/> Gallery App Project */}
             </h1>
             <p className="lead mb-5">
               Prototype of personal photo gallery.

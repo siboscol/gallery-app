@@ -11,13 +11,13 @@
     "scripts": {
         "start": "node ./server/index.js",
         "start-dev": "nodemon ./server/index.js",
-        "dev": "cross-env NODE_ENV=development PORT=4000 node ./server/index.js",
+        "dev": "cross-env NODE_ENV=development PORT=4000 nodemon ./server/index.js",
         "build": "next build",
         "postinstall": "next build"
     },
     "devDependencies": {
-        "nodemon": "^1.17.5",
-        "cross-env": "^5.1.6"
+        "cross-env": "^5.1.6",
+        "nodemon": "^1.17.5"
     },
     "dependencies": {
         "babel-core": "^6.26.3",
@@ -26,6 +26,7 @@
         "body-parser": "^1.18.3",
         "bootstrap": "^4.1.3",
         "connect-mongo": "^2.0.3",
+        "cookie-parser": "^1.4.4",
         "cors": "^2.8.4",
         "dotenv": "^8.0.0",
         "express": "^4.16.3",

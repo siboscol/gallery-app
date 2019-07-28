@@ -2,6 +2,7 @@ import Gallery from 'react-grid-gallery';
 import Page from '../../components/page';
 import Layout from '../../components/layout';
 import AsyncData, { getOrigin } from '../../components/async-data';
+import { handleAuthSSR } from '../../components/auth';
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
 
 const getPicsumAPIUrl = (page = 0, limit = 100) => { return `/api/photos?page=${page}&limit=${limit}`; }
@@ -26,8 +27,11 @@ export default class extends Page {
     };
   }
 
-  static async getInitialProps({ req }) {
-    const data = await AsyncData.getData(getOrigin(req) + getPicsumAPIUrl());
+  static async getInitialProps(ctx) {
+    // Validate JWT before rendering page
+    // If the JWT is invalid it must redirect back to the main page.
+    await handleAuthSSR(ctx);
+    const data = await AsyncData.getData(getOrigin(ctx.req) + getPicsumAPIUrl());
     return {
       photos: processImages(data)
     }
