@@ -17,7 +17,9 @@ npm install
 
 To install mongodb on Mac follow => https://treehouse.github.io/installation-guides/mac/mongo-mac.html
 
-To install mongodb on Window follow => https://medium.com/@LondonAppBrewery/how-to-download-install-mongodb-on-windows-4ee4b3493514
+- To install mongodb on Window follow => https://medium.com/@LondonAppBrewery/how-to-download-install-mongodb-on-windows-4ee4b3493514
+  - Run the Mongo daemon, in one of your terminal windows run `mongod`. This should start the Mongo server.
+  - Run the Mongo shell, with the Mongo daemon running in one terminal, type `mongo` in another terminal window. This will run the Mongo shell which is an application to access data in MongoDB.
 
 ### Secrets for Environment Variables
 
