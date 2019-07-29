@@ -19,6 +19,12 @@ To install mongodb on Mac follow => https://treehouse.github.io/installation-gui
 
 To install mongodb on Window follow => https://medium.com/@LondonAppBrewery/how-to-download-install-mongodb-on-windows-4ee4b3493514
 
+### Secrets for Environment Variables
+
+On `.env.example` there are the environment variables that needs to be set for the project.
+
+Copy/Rename the file to `.env` on the root folder and set the mongodb uri and secret fro JWT.
+
 ## Usage
 
 ```
@@ -37,6 +43,14 @@ Navigate to http://localhost:4000. The app will automatically reload if you chan
 ### Build
 
 Run `npm run build` to build the next project. The build artifacts will be stored in the `.next/` directory.
+
+----
+
+## Further reading
+
+### Database hosting
+
+If you need an instance of MongoDB in the cloud https://mlab.com/ have free and inexpensive options.
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
