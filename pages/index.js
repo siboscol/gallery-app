@@ -10,7 +10,7 @@ export default class extends Page {
       <Layout {...this.props} title={'Gallery App Project'} navmenu={false} container={false}>
         <Jumbotron className="text-light rounded-0" style={{
           backgroundColor: 'rgba(73,155,234,1)',
-          background: 'radial-gradient(ellipse at center, rgba(73,155,234,1) 0%, rgba(32,124,229,1) 100%)',
+          background: 'url("/static/home.jpg")',
           boxShadow: 'inset 0 0 100px rgba(0,0,0,0.1)'
           }}>
           <Container className="mt-2 mb-2">
@@ -22,7 +22,7 @@ export default class extends Page {
               </span>
             </h1>
             <p className="lead mb-5">
-              Prototype of personal photo gallery.
+              Prototype of personal photo gallery built with Next.js
             </p>
             <p className="text-right">
               <a href="https://github.com/siboscol/gallery-app" className="btn btn-outline-light btn-lg"><span className="icon ion-logo-github mr-2"/> Download from GitHub</a>
@@ -49,27 +49,24 @@ export default class extends Page {
           </Container>
         </Jumbotron>
         <Container>
-          <p className="text-muted small">
-            * This project is not associated with Next.js or Zeit.
-          </p>
           <h2 className="text-center display-4 mt-5 mb-2">Features</h2>
           <Row className="pb-5">
             <Col xs="12" sm="4" className="pt-5">
-              <h3 className="text-center mb-4">Sessions / Security</h3>
+              <h3 className="text-center mb-4">Frameworks</h3>
               <ListGroup>
-                <ListGroupItem><a className="text-dark" href="https://expressjs.com">Express</a></ListGroupItem>
-                <ListGroupItem><a className="text-dark" href="https://www.npmjs.com/package/express-sessions">Express Sessions</a></ListGroupItem>
-                <ListGroupItem><a className="text-dark" href="https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)">CSRF Tokens</a></ListGroupItem>
-                <ListGroupItem><a className="text-dark" href="https://www.owasp.org/index.php/HttpOnly">HTTP Only Cookies</a></ListGroupItem>
+                <ListGroupItem><a className="text-dark" href="https://nodejs.org/en/">NodeJs</a></ListGroupItem>
+                <ListGroupItem><a className="text-dark" href="https://expressjs.com">ExpressJs</a></ListGroupItem>
+                <ListGroupItem><a className="text-dark" href="https://nextjs.org/features/server-side-rendering">NextJs</a></ListGroupItem>
+                <ListGroupItem><a className="text-dark" href="https://reactjs.org/">ReactJs</a></ListGroupItem>
               </ListGroup>
             </Col>
             <Col xs="12" sm="4" className="pt-5">
               <h3 className="text-center mb-4">Authentication</h3>
               <ListGroup>
-                <ListGroupItem><a className="text-dark" href="http://www.passportjs.org">Passport</a></ListGroupItem>
-                <ListGroupItem><Link href="/examples/authentication"><a className="text-dark">Email Sign In</a></Link></ListGroupItem>
-                <ListGroupItem><Link href="/examples/authentication"><a className="text-dark">oAuth (Facebook, Google, Twitter…)</a></Link></ListGroupItem>
-                <ListGroupItem><a className="text-dark" href="https://www.npmjs.com/package/next-auth">NextAuth</a></ListGroupItem>
+                <ListGroupItem><a className="text-dark" href="https://jwt.io/">Stateless authentication (JWT)</a></ListGroupItem>
+                <ListGroupItem><a className="text-dark">Registration / Login / Sign out</a></ListGroupItem>
+                <ListGroupItem><a className="text-dark" href="https://www.npmjs.com/package/cors">Cross-origin resource sharing (CORS)</a></ListGroupItem>
+                <ListGroupItem><a className="text-dark" href="https://www.mongodb.com/">MongoDB cloud database</a></ListGroupItem>
               </ListGroup>
             </Col>
             <Col xs="12" sm="4" className="pt-5">
@@ -84,35 +81,21 @@ export default class extends Page {
           </Row>
           <h2 className="text-center display-4 mt-2 mb-5">Getting Started</h2>
           <p>
-            <a href="https://github.com/zeit/next.js">Next.js</a> from <a href="https://zeit.co">Zeit</a> makes creating
-            websites with React easy.
-          </p>
-          <p>
             This project integrates several concepts to show how you can use them together in a Next.js project.
           </p>
           <p>
             It also serves as template for creating new projects.
           </p>
           <pre>
-{`git clone https://github.com/iaincollins/nextjs-starter.git
+{`git clone https://github.com/siboscol/gallery-app.git
 npm install
-npm run dev`}
+npm start`}
           </pre>
           <p>
-            The simplest way to deploy projects to the cloud is with with 'now', which is from Zeit, the creators of Next.js framework.
-          </p>
-            <pre>
-{`npm install -g now
-now`}
-            </pre>
-          <p>
-            For more information on how to build and deploy see <a href="https://github.com/iaincollins/nextjs-starter/blob/master/README.md">README.md</a>
+            In order to get access to the gallery the user needs to sign up.
           </p>
           <p>
-            For tips on configuring authentication see <a href="https://github.com/iaincollins/nextjs-starter/blob/master/AUTHENTICATION.md">AUTHENTICATION.md</a>
-          </p>
-          <p>
-            The next.js repository has a <a href="https://github.com/zeit/next.js/tree/master/examples">great selection of examples</a> which are an excellent reference.
+            For more information see <a href="https://github.com/siboscol/gallery-app/blob/master/README.md">README.md</a>
           </p>
         </Container>
       </Layout>

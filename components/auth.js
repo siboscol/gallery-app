@@ -28,7 +28,7 @@ export const handleAuthSSR = async (ctx) => {
             if(!response.ok) {
                 throw new Error('Network response was not ok.');
             }
-            console.log('Valid Token.')
+
             return user;
         } else {
             throw new Error('Missing token');

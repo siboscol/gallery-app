@@ -53,7 +53,7 @@ export default class extends Page {
       <Layout {...this.props} navmenu={false} title="Gallery">
         <h1 className="display-2">Gallery</h1>
         <p className="lead">
-          This project uses both a custom Page class and a Layout component.
+          This project uses <a href="https://picsum.photos/">Lorem Picsum API</a> to provide a gallery photos.
         </p>
         <div style={{
           display: "block",

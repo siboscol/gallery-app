@@ -41,7 +41,6 @@ export default class extends React.Component {
       submitting: true
     })
 
-    console.log('credentials', this.state)
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -50,13 +49,12 @@ export default class extends React.Component {
     const res = await fetch('/users/authenticate', requestOptions)
     if (res.ok) {
       const data = await res.json()
-      console.log('Authenticate response', data)
 
       const cookies = new Cookies()
       cookies.set('token', data.token)
       cookies.set('user', data.username)
 
-      Router.push('/examples/gallery')
+      Router.push('/views/gallery')
     } else {
       // Error while logging in
       this.setState({
@@ -170,12 +168,12 @@ export class SignUp extends React.Component {
       };
       const res = await fetch('/users/authenticate', authOptions)
       const data = await res.json()
-      console.log('Authenticate response sign up', data)
+      // Storing token and user for user menu
       const cookies = new Cookies()
       cookies.set('token', data.token)
       cookies.set('user', data.username)
 
-      Router.push('/examples/gallery')
+      Router.push('/views/gallery')
     } else {
       // Error while signing up
       this.setState({
