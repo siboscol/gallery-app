@@ -62,8 +62,8 @@ export default class extends React.Component {
           <div className="nojs-navbar">
             <Nav navbar>
               <NavItem>
-                <Link prefetch href="/examples/gallery">
-                  <NavLink href="/examples/gallery">Gallery</NavLink>
+                <Link prefetch href="/views/gallery">
+                  <NavLink href="/views/gallery">Gallery</NavLink>
                 </Link>
               </NavItem>
             </Nav>
@@ -116,7 +116,7 @@ export class MainBody extends React.Component {
               <h5 className="text-muted text-uppercase">Pages</h5>
               <ListGroup>
                 <ListGroupItem>
-                  <Link prefetch href="/examples/styling"><a href="/examples/gallery" className="d-block">Gallery</a></Link>
+                  <Link prefetch href="/views/gallery"><a href="/views/gallery" className="d-block">Gallery</a></Link>
                 </ListGroupItem>
               </ListGroup>
             </Col>
