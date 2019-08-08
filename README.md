@@ -25,7 +25,7 @@ To install mongodb on Mac follow => https://treehouse.github.io/installation-gui
 
 On `.env.example` there are the environment variables that needs to be set for the project.
 
-Copy/Rename the file to `.env` on the root folder and set the mongodb uri and secret fro JWT.
+Copy/Rename the file to `.env` on the root folder and set the mongodb uri and secret for JWT.
 
 ## Usage
 
