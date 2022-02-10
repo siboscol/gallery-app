@@ -40,7 +40,7 @@
         "mongoose": "^5.1.4",
         "next": "^7.0.2",
         "node-fetch": "^2.6.0",
-        "node-sass": "^4.11.0",
+        "node-sass": "^7.0.0",
         "path": "^0.12.7",
         "popper.js": "^1.14.6",
         "raw-loader": "^3.1.0",
